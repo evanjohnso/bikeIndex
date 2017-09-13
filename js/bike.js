@@ -7,6 +7,10 @@
 //user can see a map with stolen bikes in area
 
 export let bikeFinder = {
+
+
+
+
   parseJSONBikeArray: function(responseObject, display) {
     let ourBikes = [];
    responseObject.bikes.forEach(function(bike) {
