@@ -6,18 +6,11 @@ $(document).ready(function() {
     //loop through bike array and display on screen in nice format
     bikeArray.forEach(function(bike) {
 
-      $('#bikeInfo').append(`<div class='col-md-3'>
-
-                                </div>`);
-
-      // $('#bikeInfo').append('<li>' + bike.date_stolen + '</li>');
-
-      console.log(bike);
+      $('#bikeInfo').append('<p>' + bike.title + "- Stolen on: " + bike.date_stolen);
     });
-    // alert(bikeArray);
   }
-  function displayBikeData(dataObject) {
-    alert("portland has stolen this many bikes " + dataObject.stolen);
+  function displayBikeData(dataObject, location) {
+    $('#bikeStolenData').text(`Bikes stolen in ${location}: ${dataObject.stolen}`);
   }
 
   $('#userInputLocation').submit(function(evt) {

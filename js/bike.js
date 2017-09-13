@@ -7,10 +7,6 @@
 //user can see a map with stolen bikes in area
 
 export let bikeFinder = {
-
-
-
-
   parseJSONBikeArray: function(responseObject, display) {
     let ourBikes = [];
    responseObject.bikes.forEach(function(bike) {
@@ -27,7 +23,7 @@ export let bikeFinder = {
    });
     display(ourBikes);
   },
-  findBikesByLocation: function(location, distance, display, displayPromise) {
+  findBikesByLocation: function(location, distance, display, displayBikeData) {
     $.ajax({
       url: `https://bikeindex.org:443/api/v3/search?page=1&per_page=25&location=${location}&distance=${distance}&stolenness=proximity`,
       type:  "GET",
@@ -35,18 +31,16 @@ export let bikeFinder = {
         format: 'json'
       },
       success: (responseObject) => {
-        alert('first promise');
         this.parseJSONBikeArray(responseObject, display);
-        this.findBikeCountByLocation(location, distance, displayPromise);
+        this.findBikeCountByLocation(location, distance, displayBikeData);
       },
       error: function(error) {
         console.log(error);
         //alert error message
       }
-
     });
   },
-  findBikeCountByLocation(location, distance, display) {
+  findBikeCountByLocation(location, distance, displayBikeData) {
     $.ajax({
       url: `https://bikeindex.org:443/api/v3/search/count?location=${location}&distance=${distance}&stolenness=proximity`,
       type:  "GET",
@@ -54,7 +48,7 @@ export let bikeFinder = {
         format: 'json'
       },
       success: (responseObject) => {
-        display(responseObject);
+        displayBikeData(responseObject, location);
       },
       error: function(error) {
         console.log(error);

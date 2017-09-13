@@ -11,3 +11,12 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+
+.dataOutput {
+  display: flex;
+
+}
+
+.dataOutput * {
+  flex: none | [<'flex-grow'> <'flex-shrink'>? || <'flex-basis'>]
+}
