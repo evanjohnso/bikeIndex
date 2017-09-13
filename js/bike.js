@@ -1,6 +1,6 @@
 // apicall to see all bikes in a location within proximity
 
-
+// display time as human readable format
 //user can search for all stolen bikes in an area
 //user can search for all stolen bikes in an area by color
 
@@ -15,18 +15,19 @@ export let bikeFinder = {
     let ourBikes = [];
    responseObject.bikes.forEach(function(bike) {
      ourBikes.push(
+       //make a smaller bike object
        {
          title: bike.title,
          year: bike.year,
          frame_colors: bike.frame_colors,
          stolen_location: bike.stolen_location,
-         date_stolen: bike.date_stolen
+         date_stolen: moment.unix(bike.date_stolen).format("MM/DD/YYYY"),
        }
      );
    });
     display(ourBikes);
   },
-  findBikesByLocation: function(location, distance, display) {
+  findBikesByLocation: function(location, distance, display, displayPromise) {
     $.ajax({
       url: `https://bikeindex.org:443/api/v3/search?page=1&per_page=25&location=${location}&distance=${distance}&stolenness=proximity`,
       type:  "GET",
@@ -34,7 +35,26 @@ export let bikeFinder = {
         format: 'json'
       },
       success: (responseObject) => {
+        alert('first promise');
         this.parseJSONBikeArray(responseObject, display);
+        this.findBikeCountByLocation(location, distance, displayPromise);
+      },
+      error: function(error) {
+        console.log(error);
+        //alert error message
+      }
+
+    });
+  },
+  findBikeCountByLocation(location, distance, display) {
+    $.ajax({
+      url: `https://bikeindex.org:443/api/v3/search/count?location=${location}&distance=${distance}&stolenness=proximity`,
+      type:  "GET",
+      data: {
+        format: 'json'
+      },
+      success: (responseObject) => {
+        display(responseObject);
       },
       error: function(error) {
         console.log(error);

@@ -1,0 +1,13 @@
+#test  {
+  width: 150px;
+}
+
+ul #bikeInfo {
+  list-style-type: none;
+}
+
+body {
+  background-image: url('../img/background.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
