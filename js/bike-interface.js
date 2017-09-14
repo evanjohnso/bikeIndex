@@ -3,9 +3,7 @@ import { bikeFinder } from "./../js/bike.js";
 $(document).ready(function() {
 
   function displayBikes(bikeArray) {
-    //loop through bike array and display on screen in nice format
     bikeArray.forEach(function(bike) {
-
       $('#bikeInfo').append('<p>' + bike.title + "- Stolen on: " + bike.date_stolen);
     });
   }
@@ -20,7 +18,7 @@ $(document).ready(function() {
     let color = $("input[name='userInputColor']").val();
     $("input").val("");
 
-    bikeFinder.findBikesByLocation(location, distance, displayBikes, displayBikeData);
+    bikeFinder.findBikesByLocation(location, distance, displayBikes, displayBikeData, initializeMap, findLatLong);
   });
 
   let homies = [
@@ -43,13 +41,49 @@ $(document).ready(function() {
       });
     });
   }
+  // console.log(homies);
+  // initializeMap(pickles, homies);
+  let bikesss = [ {
+    stolen_location: "Portland, OR,97202"
+  },
+  {
+    stolen_location: "Portland, OR, 97222"
+  },
+  {
+    stolen_location: "Portland, OR, 97225"
+  }
 
-  initializeMap(pickles, homies);
+  ];
 
+  function findLatLong(arrayOfOurBikeObjects) {
+    let geocoder = new google.maps.Geocoder();
+    let coordArray = [];
 
+    arrayOfOurBikeObjects.forEach(function(bike) {
+      let thisAddress = bike.stolen_location;
+      geocoder.geocode( { address: thisAddress /*lets get that returned zipcode info here*/ },
+        function(results, status) {
+          let lat = results[0].geometry.location.lat();
+          let lng = results[0].geometry.location.lng();
+          let coord = { lat: lat, lng: lng };
+          console.log('inside loop'+coord);
+          console.log('next one is coordArray');
+          console.log(coordArray);
+          coordArray.push(coord);
+        });
+    });
 
-
-
-
-
+    console.log('this is outside the loop');
+    console.log(coordArray);
+    console.log("After loop");
+    return coordArray;
+  }
+  let answer = findLatLong(bikesss);
+  console.log('this is the answer');
+  console.log(answer);
+  console.log(typeof(answer));
+  console.log(answer);
+  console.log('the one before');
+  // initializeMap(pickles, findLatLong(bikesss));
+  // bikeFinder.findLatLong();
 });
