@@ -23,5 +23,33 @@ $(document).ready(function() {
     bikeFinder.findBikesByLocation(location, distance, displayBikes, displayBikeData);
   });
 
+  let homies = [
+                           { lat: 45.511798, lng: -122.694901 },
+                           { lat: 45.516007, lng: -122.682562 },
+                           { lat: 45.519397, lng: -122.653176 }
+                         ];
+  let pickles = {lat: 45.5231, lng: -122.6765} ;
+
+  function initializeMap(ourLocation, arrayOfLocations) {
+    let ourMap = new google.maps.Map(document.getElementById('bikeMap'), {
+      center: ourLocation,
+      zoom: 10
+    });
+    arrayOfLocations.forEach(function(location) {
+      new google.maps.Marker({
+         position: location,
+         map: ourMap,
+         title: 'Bike!'
+      });
+    });
+  }
+
+  initializeMap(pickles, homies);
+
+
+
+
+
+
 
 });
