@@ -58,11 +58,17 @@ $(document).ready(function() {
   function findLatLong(arrayOfOurBikeObjects) {
     let geocoder = new google.maps.Geocoder();
     let coordArray = [];
+    // console.log(coordArray);
 
-    arrayOfOurBikeObjects.forEach(function(bike) {
-      let thisAddress = bike.stolen_location;
-      geocoder.geocode( { address: thisAddress /*lets get that returned zipcode info here*/ },
-        function(results, status) {
+    return new Promise(resolve, reject) {
+
+    }
+
+    for (var i = 0; i < arrayOfOurBikeObjects.length; i++) {
+      let resultAmount = 0;
+      let thisAddress = arrayOfOurBikeObjects[i].stolen_location;
+      geocoder.geocode( { address: thisAddress },
+        function(results) {
           let lat = results[0].geometry.location.lat();
           let lng = results[0].geometry.location.lng();
           let coord = { lat: lat, lng: lng };
@@ -70,20 +76,38 @@ $(document).ready(function() {
           console.log('next one is coordArray');
           console.log(coordArray);
           coordArray.push(coord);
+          resultAmount++;
+          // console.log(coordArray);
         });
-    });
+        if (resultAmount === arrayOfOurBikeObjects.length-1) {
+          console.log(i);
+          console.log(coordArray);
+          return coordArray;
+        }
+    }
 
-    console.log('this is outside the loop');
-    console.log(coordArray);
-    console.log("After loop");
-    return coordArray;
+    // arrayOfOurBikeObjects.forEach(function(bike) {
+    //   let thisAddress = bike.stolen_location;
+    //
+    // });
+    //
+    // console.log('this is outside the loop');
+    // console.log(coordArray);
+    // console.log("After loop");
+    // return coordArray;
   }
-  let answer = findLatLong(bikesss);
-  console.log('this is the answer');
-  console.log(answer);
-  console.log(typeof(answer));
-  console.log(answer);
-  console.log('the one before');
-  // initializeMap(pickles, findLatLong(bikesss));
+  let output = findLatLong(bikesss);
+  console.log('output');
+  console.log(Array.isArray(output));
+  console.log(output);
+  console.log(output.length);
+  console.log(output[0]);
+  // let answer = findLatLong(bikesss);
+  // console.log('this is the answer');
+  // console.log(answer);
+  // console.log(typeof(answer));
+  // console.log(answer);
+  // console.log('the one before');
+  // initializeMap(pickles);
   // bikeFinder.findLatLong();
 });
